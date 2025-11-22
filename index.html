@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Barcode Generator</title>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <style>
@@ -19,7 +19,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 15px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                align-items: flex-start;
+                padding-top: 20px;
+            }
         }
 
         .container {
@@ -31,11 +39,39 @@
             width: 100%;
         }
 
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                border-radius: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+                border-radius: 10px;
+            }
+        }
+
         h1 {
             text-align: center;
             color: #333;
             margin-bottom: 30px;
             font-size: 2em;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.75em;
+                margin-bottom: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5em;
+                margin-bottom: 15px;
+            }
         }
 
         .input-group {
@@ -58,30 +94,18 @@
             transition: border-color 0.3s;
         }
 
+        @media (max-width: 480px) {
+            input[type="text"] {
+                padding: 10px 12px;
+                font-size: 16px;
+            }
+        }
+
         input[type="text"]:focus {
             outline: none;
             border-color: #667eea;
         }
 
-        .format-group {
-            margin-bottom: 25px;
-        }
-
-        select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            background: white;
-            cursor: pointer;
-            transition: border-color 0.3s;
-        }
-
-        select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
 
         button {
             width: 100%;
@@ -94,6 +118,13 @@
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        @media (max-width: 480px) {
+            button {
+                padding: 12px;
+                font-size: 15px;
+            }
         }
 
         button:hover {
@@ -112,6 +143,14 @@
             background: #f8f9fa;
             border-radius: 10px;
             display: none;
+            overflow-x: auto;
+        }
+
+        @media (max-width: 480px) {
+            .barcode-container {
+                padding: 15px;
+                margin-top: 20px;
+            }
         }
 
         .barcode-container.show {
@@ -120,6 +159,14 @@
 
         #barcode {
             margin: 20px auto;
+            max-width: 100%;
+            height: auto;
+        }
+
+        @media (max-width: 480px) {
+            #barcode {
+                margin: 10px auto;
+            }
         }
 
         .error {
@@ -156,17 +203,23 @@
             font-size: 14px;
             margin: 5px 0;
         }
+
+        @media (max-width: 480px) {
+            .info {
+                padding: 12px;
+                font-size: 13px;
+            }
+
+            .info p {
+                font-size: 13px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>📊 Barcode Generator</h1>
         
-        <div class="info">
-            <p><strong>Supported Formats:</strong></p>
-            <p>CODE128, EAN-13, UPC, CODE39, and more</p>
-        </div>
-
         <div class="input-group">
             <label for="barcodeInput">Enter Text/Number:</label>
             <input 
@@ -175,20 +228,6 @@
                 placeholder="e.g., 1234567890" 
                 autofocus
             >
-        </div>
-
-        <div class="format-group">
-            <label for="formatSelect">Barcode Format:</label>
-            <select id="formatSelect">
-                <option value="CODE128">CODE128 (Default)</option>
-                <option value="CODE39">CODE39</option>
-                <option value="EAN13">EAN-13 (13 digits)</option>
-                <option value="EAN8">EAN-8 (8 digits)</option>
-                <option value="UPC">UPC (12 digits)</option>
-                <option value="ITF14">ITF-14 (14 digits)</option>
-                <option value="MSI">MSI</option>
-                <option value="pharmacode">Pharmacode</option>
-            </select>
         </div>
 
         <button onclick="generateBarcode()">Generate Barcode</button>
@@ -211,7 +250,6 @@
 
         function generateBarcode() {
             const input = document.getElementById('barcodeInput').value.trim();
-            const format = document.getElementById('formatSelect').value;
             const barcodeContainer = document.getElementById('barcodeContainer');
             const errorDiv = document.getElementById('error');
 
@@ -227,13 +265,19 @@
             }
 
             try {
-                // Generate barcode
+                // Determine barcode width based on screen size
+                const isMobile = window.innerWidth <= 480;
+                const barcodeWidth = isMobile ? 1.5 : 2;
+                const barcodeHeight = isMobile ? 80 : 100;
+                const fontSize = isMobile ? 14 : 18;
+
+                // Generate barcode with CODE128 format
                 JsBarcode("#barcode", input, {
-                    format: format,
-                    width: 2,
-                    height: 100,
+                    format: 'CODE128',
+                    width: barcodeWidth,
+                    height: barcodeHeight,
                     displayValue: true,
-                    fontSize: 18,
+                    fontSize: fontSize,
                     margin: 10
                 });
 
