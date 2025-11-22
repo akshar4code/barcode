@@ -75,7 +75,21 @@
         }
 
         .input-group {
+            margin-bottom: 20px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
             margin-bottom: 25px;
+        }
+
+        @media (max-width: 480px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
         }
 
         label {
@@ -127,6 +141,76 @@
             }
         }
 
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .secondary-btn {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            padding: 10px 16px;
+            font-size: 14px;
+            width: auto;
+        }
+
+        .secondary-btn:hover {
+            box-shadow: 0 5px 20px rgba(17, 153, 142, 0.4);
+        }
+
+        @media (max-width: 480px) {
+            .button-group {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .secondary-btn {
+                width: 100%;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .dynamic-field {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .dynamic-field input {
+            flex: 1;
+        }
+
+        .remove-field-btn {
+            padding: 12px 16px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            width: auto;
+            min-width: 80px;
+        }
+
+        .remove-field-btn:hover {
+            background: #c0392b;
+        }
+
+        @media (max-width: 480px) {
+            .dynamic-field {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .remove-field-btn {
+                width: 100%;
+            }
+        }
+
         button:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
@@ -166,6 +250,54 @@
         @media (max-width: 480px) {
             #barcode {
                 margin: 10px auto;
+            }
+        }
+
+        .details-display {
+            margin-top: 20px;
+            text-align: left;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .details-display p {
+            margin: 8px 0;
+            color: #333;
+            font-size: 16px;
+            font-weight: bold;
+            display: grid;
+            grid-template-columns: 100px auto 1fr;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .details-display strong {
+            text-align: right;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .details-display .colon {
+            text-align: center;
+            font-weight: bold;
+            width: 20px;
+        }
+
+        .details-display .value {
+            text-align: left;
+            font-weight: bold;
+        }
+
+        @media (max-width: 480px) {
+            .details-display {
+                padding: 12px;
+            }
+
+            .details-display p {
+                font-size: 14px;
+                grid-template-columns: 80px auto 1fr;
             }
         }
 
@@ -214,44 +346,197 @@
                 font-size: 13px;
             }
         }
+
+        .print-btn {
+            margin-top: 15px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+        }
+
+        .print-btn:hover {
+            box-shadow: 0 5px 20px rgba(243, 156, 18, 0.4);
+        }
+
+        @media print {
+            @page {
+                size: 60mm 45mm;
+                margin: 0;
+            }
+            
+            body * {
+                visibility: hidden;
+            }
+            
+            .barcode-container, .barcode-container * {
+                visibility: visible;
+            }
+            
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            
+            .barcode-container {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 60mm;
+                height: 45mm;
+                padding: 2mm;
+                margin: 0;
+                overflow: hidden;
+                background: white;
+                box-shadow: none;
+                border-radius: 0;
+            }
+            
+            .print-btn, .download-btn {
+                display: none !important;
+            }
+            
+            .details-display {
+                font-size: 7pt;
+                padding: 1mm;
+                margin-bottom: 1mm;
+                background: white;
+                border: none;
+            }
+            
+            .details-display p {
+                margin: 0.5mm 0;
+                font-size: 7pt;
+                line-height: 1.2;
+            }
+            
+            .details-display strong {
+                width: auto;
+                font-size: 7pt;
+            }
+            
+            #barcode {
+                max-width: 100%;
+                width: 100%;
+                height: auto;
+                margin: 0;
+                display: block;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📊 Barcode Generator</h1>
+        <h1>📦 Product Label Generator</h1>
         
+        <div class="details-grid">
+            <div class="input-group">
+                <label for="codeInput">Code:</label>
+                <input 
+                    type="text" 
+                    id="codeInput" 
+                    oninput="updateBarcodeNumber()"
+                    autofocus
+                >
+            </div>
+
+            <div class="input-group">
+                <label for="finishInput">Finish:</label>
+                <input 
+                    type="text" 
+                    id="finishInput" 
+                    oninput="updateBarcodeNumber()"
+                >
+            </div>
+
+            <div class="input-group">
+                <label for="sizeInput">Size:</label>
+                <input 
+                    type="text" 
+                    id="sizeInput" 
+                    oninput="updateBarcodeNumber()"
+                >
+            </div>
+
+            <div class="input-group">
+                <label for="qtyInput">Quantity:</label>
+                <input 
+                    type="text" 
+                    id="qtyInput" 
+                    oninput="updateBarcodeNumber()"
+                >
+            </div>
+
+            <div class="input-group hidden" id="mrpGroup">
+                <label for="mrpInput">MRP:</label>
+                <input 
+                    type="text" 
+                    id="mrpInput" 
+                    oninput="updateBarcodeNumber()"
+                >
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button class="secondary-btn" onclick="toggleMRP()">+ Add MRP</button>
+            <button class="secondary-btn" onclick="addDynamicField()">+ Add Custom Field</button>
+        </div>
+
+        <div id="dynamicFieldsContainer"></div>
+
         <div class="input-group">
-            <label for="barcodeInput">Enter Text/Number:</label>
+            <label for="barcodeInput">Barcode Number:</label>
             <input 
                 type="text" 
                 id="barcodeInput" 
-                placeholder="e.g., 1234567890" 
-                autofocus
+                placeholder="Auto-generated from fields above"
             >
         </div>
 
-        <button onclick="generateBarcode()">Generate Barcode</button>
+        <button onclick="generateBarcode()">Generate Product Label</button>
 
         <div class="error" id="error"></div>
 
         <div class="barcode-container" id="barcodeContainer">
+            <div class="details-display" id="detailsDisplay"></div>
             <svg id="barcode"></svg>
+            <button class="print-btn" onclick="printBarcode()">Print Label (60x45mm)</button>
             <button class="download-btn" onclick="downloadBarcode()">Download Barcode</button>
         </div>
     </div>
 
     <script>
-        // Generate barcode on Enter key press
-        document.getElementById('barcodeInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                generateBarcode();
-            }
-        });
+        // Update barcode number based on all fields
+        function updateBarcodeNumber() {
+            const code = document.getElementById('codeInput').value.trim();
+            const finish = document.getElementById('finishInput').value.trim();
+            const size = document.getElementById('sizeInput').value.trim();
+            const qty = document.getElementById('qtyInput').value.trim();
+            const mrp = document.getElementById('mrpInput').value.trim();
+            
+            // Collect all non-empty values
+            const values = [];
+            if (code) values.push(code);
+            if (finish) values.push(finish);
+            if (size) values.push(size);
+            if (qty) values.push(qty);
+            if (mrp) values.push(mrp);
+            
+            // Add dynamic field values
+            const dynamicFields = document.querySelectorAll('.dynamic-field');
+            dynamicFields.forEach(field => {
+                const value = field.querySelector('input[placeholder="Field Value"]').value.trim();
+                if (value) values.push(value);
+            });
+            
+            // Join with hyphens
+            const barcodeNumber = values.join('-');
+            document.getElementById('barcodeInput').value = barcodeNumber;
+        }
 
         function generateBarcode() {
             const input = document.getElementById('barcodeInput').value.trim();
             const barcodeContainer = document.getElementById('barcodeContainer');
             const errorDiv = document.getElementById('error');
+            const detailsDisplay = document.getElementById('detailsDisplay');
 
             // Clear previous error
             errorDiv.classList.remove('show');
@@ -259,7 +544,7 @@
 
             // Validate input
             if (!input) {
-                showError('Please enter text or number to generate barcode');
+                showError('Please enter barcode number to generate barcode');
                 barcodeContainer.classList.remove('show');
                 return;
             }
@@ -276,10 +561,42 @@
                     format: 'CODE128',
                     width: barcodeWidth,
                     height: barcodeHeight,
-                    displayValue: true,
+                    displayValue: false,
                     fontSize: fontSize,
                     margin: 10
                 });
+
+                // Get additional details
+                const code = document.getElementById('codeInput').value.trim();
+                const finish = document.getElementById('finishInput').value.trim();
+                const size = document.getElementById('sizeInput').value.trim();
+                const qty = document.getElementById('qtyInput').value.trim();
+                const mrp = document.getElementById('mrpInput').value.trim();
+
+                // Display details if any are provided
+                let detailsHTML = '';
+                if (code) detailsHTML += `<p><strong>Code</strong><span class="colon">:</span><span class="value">${code}</span></p>`;
+                if (finish) detailsHTML += `<p><strong>Finish</strong><span class="colon">:</span><span class="value">${finish}</span></p>`;
+                if (size) detailsHTML += `<p><strong>Size</strong><span class="colon">:</span><span class="value">${size}</span></p>`;
+                if (qty) detailsHTML += `<p><strong>Qty</strong><span class="colon">:</span><span class="value">${qty}</span></p>`;
+                if (mrp) detailsHTML += `<p><strong>MRP</strong><span class="colon">:</span><span class="value">${mrp}</span></p>`;
+
+                // Add dynamic fields
+                const dynamicFields = document.querySelectorAll('.dynamic-field');
+                dynamicFields.forEach(field => {
+                    const label = field.querySelector('input[placeholder="Field Name"]').value.trim();
+                    const value = field.querySelector('input[placeholder="Field Value"]').value.trim();
+                    if (label && value) {
+                        detailsHTML += `<p><strong>${label}</strong><span class="colon">:</span><span class="value">${value}</span></p>`;
+                    }
+                });
+
+                if (detailsHTML) {
+                    detailsDisplay.innerHTML = detailsHTML;
+                    detailsDisplay.style.display = 'block';
+                } else {
+                    detailsDisplay.style.display = 'none';
+                }
 
                 barcodeContainer.classList.add('show');
             } catch (error) {
@@ -316,6 +633,67 @@
             };
 
             img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
+        }
+
+        function printBarcode() {
+            window.print();
+        }
+
+        let mrpVisible = false;
+        function toggleMRP() {
+            const mrpGroup = document.getElementById('mrpGroup');
+            const btn = event.target;
+            
+            mrpVisible = !mrpVisible;
+            
+            if (mrpVisible) {
+                mrpGroup.classList.remove('hidden');
+                btn.textContent = '- Remove MRP';
+                btn.style.background = 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)';
+            } else {
+                mrpGroup.classList.add('hidden');
+                document.getElementById('mrpInput').value = '';
+                btn.textContent = '+ Add MRP';
+                btn.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
+            }
+            
+            // Recompute barcode number
+            updateBarcodeNumber();
+        }
+
+        let fieldCounter = 0;
+        function addDynamicField() {
+            fieldCounter++;
+            const container = document.getElementById('dynamicFieldsContainer');
+            
+            const fieldDiv = document.createElement('div');
+            fieldDiv.className = 'input-group dynamic-field';
+            fieldDiv.id = `dynamic-field-${fieldCounter}`;
+            
+            fieldDiv.innerHTML = `
+                <div style="flex: 1;">
+                    <label>Custom Field ${fieldCounter}:</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" placeholder="Field Name" style="flex: 1;">
+                        <input type="text" placeholder="Field Value" style="flex: 1;" oninput="updateBarcodeNumber()">
+                    </div>
+                </div>
+                <button class="remove-field-btn" onclick="removeDynamicField(${fieldCounter})">Remove</button>
+            `;
+            
+            container.appendChild(fieldDiv);
+            
+            // Recompute barcode number after adding field
+            updateBarcodeNumber();
+        }
+
+        function removeDynamicField(id) {
+            const field = document.getElementById(`dynamic-field-${id}`);
+            if (field) {
+                field.remove();
+                // Recompute barcode number after removing field
+                updateBarcodeNumber();
+            }
         }
     </script>
 </body>
