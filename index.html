@@ -353,6 +353,80 @@
             box-shadow: 0 5px 20px rgba(17, 153, 142, 0.4);
         }
 
+        .resize-controls {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .resize-controls.show {
+            display: block;
+        }
+
+        .resize-controls h3 {
+            margin: 0 0 15px 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .resize-group {
+            margin-bottom: 15px;
+        }
+
+        .resize-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .resize-group input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #ddd;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .resize-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+        }
+
+        .resize-group input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            border: none;
+        }
+
+        .resize-value {
+            display: inline-block;
+            margin-left: 10px;
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        @media (max-width: 480px) {
+            .resize-controls {
+                padding: 12px;
+            }
+
+            .resize-controls h3 {
+                font-size: 14px;
+            }
+        }
+
         .info {
             background: #e3f2fd;
             padding: 15px;
@@ -397,19 +471,27 @@
             * {
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
+                color: #000 !important;
             }
             
-            html, body {
+            html {
                 width: 60mm;
                 height: 45mm;
                 margin: 0;
                 padding: 0;
-                background: white;
-                overflow: hidden;
+            }
+            
+            body {
+                width: 60mm !important;
+                height: 45mm !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: white !important;
+                overflow: visible !important;
             }
             
             h1, .details-grid, .input-group, .button-group, 
-            #dynamicFieldsContainer, .error, button {
+            #dynamicFieldsContainer, .error, button, .info, .resize-controls {
                 display: none !important;
             }
             
@@ -435,13 +517,15 @@
                 max-height: 45mm !important;
                 padding: 0.5mm;
                 margin: 0 !important;
-                background: white;
+                background: white !important;
                 box-shadow: none;
                 border-radius: 0;
                 page-break-after: always;
                 page-break-inside: avoid;
-                overflow: hidden;
+                overflow: visible !important;
                 position: relative;
+                visibility: visible !important;
+                opacity: 1 !important;
             }
             
             .print-btn, .download-btn {
@@ -536,6 +620,15 @@
     <div class="container">
         <h1>📦 Product Label Generator</h1>
         
+        <div class="info">
+            <p><strong>🖨️ Godex G500 Printer Setup:</strong></p>
+            <p>1. In Print Dialog: Select "Godex G500" printer</p>
+            <p>2. Paper Size: Custom → 60mm x 45mm (or 2.36" x 1.77")</p>
+            <p>3. Scale: 100% (Actual Size) - DO NOT use "Fit to Page"</p>
+            <p>4. Margins: Set all to 0</p>
+            <p>5. Orientation: Landscape (if label is wider than tall)</p>
+        </div>
+        
         <div class="details-grid">
             <div class="input-group">
                 <label for="codeInput">Code:</label>
@@ -603,6 +696,23 @@
         <button onclick="generateBarcode()">Generate Product Label</button>
 
         <div class="error" id="error"></div>
+
+        <div class="resize-controls" id="resizeControls">
+            <h3>🎨 Resize Label Elements</h3>
+            <div class="resize-group">
+                <label for="detailsFontSize">Product Details Font Size: <span class="resize-value" id="detailsFontValue">100%</span></label>
+                <input type="range" id="detailsFontSize" min="50" max="150" value="100" oninput="resizeElements()">
+            </div>
+            <div class="resize-group">
+                <label for="customFontSize">Custom Fields Font Size: <span class="resize-value" id="customFontValue">100%</span></label>
+                <input type="range" id="customFontSize" min="50" max="150" value="100" oninput="resizeElements()">
+            </div>
+            <div class="resize-group">
+                <label for="barcodeSize">Barcode Size: <span class="resize-value" id="barcodeSizeValue">100%</span></label>
+                <input type="range" id="barcodeSize" min="50" max="150" value="100" oninput="resizeElements()">
+            </div>
+            <button class="secondary-btn" onclick="resetSizes()" style="width: 100%; margin-top: 10px;">Reset to Default</button>
+        </div>
 
         <div class="barcode-container" id="barcodeContainer">
             <div class="details-display" id="detailsDisplay"></div>
@@ -776,6 +886,12 @@
                 }
 
                 barcodeContainer.classList.add('show');
+                
+                // Show resize controls and store original sizes
+                document.getElementById('resizeControls').classList.add('show');
+                window.originalDetailsFontSize = detailsFontSize;
+                window.originalCustomFontSize = customFontSize;
+                window.originalBarcodeHeight = barcodeHeight;
             } catch (error) {
                 showError('Error: ' + error.message);
                 barcodeContainer.classList.remove('show');
@@ -786,6 +902,9 @@
             const errorDiv = document.getElementById('error');
             errorDiv.textContent = message;
             errorDiv.classList.add('show');
+            
+            // Hide resize controls on error
+            document.getElementById('resizeControls').classList.remove('show');
         }
 
         function downloadBarcode() {
@@ -871,6 +990,74 @@
                 // Recompute barcode number after removing field
                 updateBarcodeNumber();
             }
+        }
+
+        function resizeElements() {
+            const detailsScale = document.getElementById('detailsFontSize').value;
+            const customScale = document.getElementById('customFontSize').value;
+            const barcodeScale = document.getElementById('barcodeSize').value;
+            
+            // Update display values
+            document.getElementById('detailsFontValue').textContent = detailsScale + '%';
+            document.getElementById('customFontValue').textContent = customScale + '%';
+            document.getElementById('barcodeSizeValue').textContent = barcodeScale + '%';
+            
+            // Get original sizes
+            const originalDetailsSize = parseFloat(window.originalDetailsFontSize);
+            const originalCustomSize = parseFloat(window.originalCustomFontSize);
+            const originalBarcodeHeight = window.originalBarcodeHeight;
+            
+            // Calculate new sizes
+            const newDetailsSize = (originalDetailsSize * detailsScale / 100).toFixed(1) + 'pt';
+            const newCustomSize = (originalCustomSize * customScale / 100).toFixed(1) + 'pt';
+            
+            // Apply to product details
+            document.querySelectorAll('.details-display p, .details-display strong, .details-display .colon, .details-display .value').forEach(el => {
+                el.style.fontSize = newDetailsSize;
+            });
+            
+            // Apply to custom fields
+            document.querySelectorAll('.custom-field-box .field-label, .custom-field-box .field-value').forEach(el => {
+                el.style.fontSize = newCustomSize;
+            });
+            
+            // Resize barcode
+            const barcodeInput = document.getElementById('barcodeInput').value.trim();
+            if (barcodeInput) {
+                const isMobile = window.innerWidth <= 480;
+                const barcodeWidth = isMobile ? 1.5 : 2;
+                const newBarcodeHeight = Math.round(originalBarcodeHeight * barcodeScale / 100);
+                const screenFontSize = isMobile ? 14 : 18;
+                
+                JsBarcode("#barcode", barcodeInput, {
+                    format: 'CODE128',
+                    width: barcodeWidth,
+                    height: newBarcodeHeight,
+                    displayValue: false,
+                    fontSize: screenFontSize,
+                    margin: 1
+                });
+                
+                // Update max-height for print
+                const barcodeElement = document.getElementById('barcode');
+                const newMaxHeight = (parseFloat(window.originalDetailsFontSize) * 2 * barcodeScale / 100).toFixed(1) + 'mm';
+                barcodeElement.style.maxHeight = newMaxHeight;
+            }
+        }
+
+        function resetSizes() {
+            // Reset sliders
+            document.getElementById('detailsFontSize').value = 100;
+            document.getElementById('customFontSize').value = 100;
+            document.getElementById('barcodeSize').value = 100;
+            
+            // Reset display values
+            document.getElementById('detailsFontValue').textContent = '100%';
+            document.getElementById('customFontValue').textContent = '100%';
+            document.getElementById('barcodeSizeValue').textContent = '100%';
+            
+            // Apply original sizes
+            resizeElements();
         }
     </script>
 </body>
