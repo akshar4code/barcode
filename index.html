@@ -472,7 +472,7 @@
 
         @media print {
             @page {
-                size: 55mm 40mm;
+                size: 57mm 45mm;
                 margin: 0;
             }
             
@@ -483,15 +483,15 @@
             }
             
             html {
-                width: 55mm;
-                height: 40mm;
+                width: 57mm;
+                height: 45mm;
                 margin: 0;
                 padding: 0;
             }
             
             body {
-                width: 55mm !important;
-                height: 40mm !important;
+                width: 57mm !important;
+                height: 45mm !important;
                 margin: 0 !important;
                 padding: 0 !important;
                 background: white !important;
@@ -504,10 +504,10 @@
             }
             
             .container {
-                width: 55mm;
-                height: 40mm;
-                max-width: 55mm;
-                max-height: 40mm;
+                width: 57mm;
+                height: 45mm;
+                max-width: 57mm;
+                max-height: 45mm;
                 padding: 0;
                 margin: 0;
                 box-shadow: none;
@@ -519,10 +519,10 @@
             .barcode-container {
                 display: flex !important;
                 flex-direction: column;
-                width: 55mm !important;
-                height: 40mm !important;
-                max-width: 55mm !important;
-                max-height: 40mm !important;
+                width: 57mm !important;
+                height: 45mm !important;
+                max-width: 57mm !important;
+                max-height: 45mm !important;
                 padding: 0.5mm;
                 margin: 0 !important;
                 background: white !important;
@@ -559,7 +559,7 @@
             }
             
             .details-display strong {
-                width: 15mm;
+                width: 12mm;
                 font-weight: bold;
                 flex-shrink: 0;
             }
@@ -870,7 +870,7 @@
                     customFieldsArray.forEach(field => {
                         customFieldsHTML += `
                             <div class="custom-field-box">
-                                <div class="field-label">${field.label}</div>
+                                <div class="field-label">${field.label} :</div>
                                 <div class="field-value">${field.value}</div>
                             </div>
                         `;
