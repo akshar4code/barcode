@@ -108,6 +108,14 @@
             transition: border-color 0.3s;
         }
 
+        #codeInput,
+        #finishInput,
+        #sizeInput,
+        #qtyInput,
+        #mrpInput {
+            font-weight: normal;
+        }
+
         @media (max-width: 480px) {
             input[type="text"] {
                 padding: 10px 12px;
@@ -267,8 +275,7 @@
             color: #333;
             font-size: 16px;
             font-weight: bold;
-            display: grid;
-            grid-template-columns: 100px auto 1fr;
+            display: flex;
             align-items: center;
             gap: 5px;
         }
@@ -277,6 +284,8 @@
             text-align: left;
             color: #333;
             font-weight: bold;
+            min-width: 80px;
+            display: inline-block;
         }
 
         .details-display .colon {
@@ -328,7 +337,6 @@
 
             .details-display p {
                 font-size: 14px;
-                grid-template-columns: 80px auto 1fr;
             }
         }
 
@@ -551,7 +559,7 @@
             }
             
             .details-display strong {
-                min-width: 11mm;
+                width: 15mm;
                 font-weight: bold;
                 flex-shrink: 0;
             }
@@ -562,7 +570,7 @@
             }
             
             .details-display .value {
-                font-weight: normal;
+                font-weight: bold;
                 flex: 1;
                 word-wrap: break-word;
             }
@@ -700,8 +708,8 @@
         <div class="resize-controls" id="resizeControls">
             <h3>🎨 Resize Label Elements</h3>
             <div class="resize-group">
-                <label for="detailsFontSize">Product Details Font Size: <span class="resize-value" id="detailsFontValue">100%</span></label>
-                <input type="range" id="detailsFontSize" min="50" max="150" value="100" oninput="resizeElements()">
+                <label for="detailsFontSize">Product Details Font Size: <span class="resize-value" id="detailsFontValue">150%</span></label>
+                <input type="range" id="detailsFontSize" min="50" max="150" value="150" oninput="resizeElements()">
             </div>
             <div class="resize-group">
                 <label for="customFontSize">Custom Fields Font Size: <span class="resize-value" id="customFontValue">100%</span></label>
@@ -892,6 +900,9 @@
                 window.originalDetailsFontSize = detailsFontSize;
                 window.originalCustomFontSize = customFontSize;
                 window.originalBarcodeHeight = barcodeHeight;
+                
+                // Apply the default 150% scale for product details immediately
+                resizeElements();
             } catch (error) {
                 showError('Error: ' + error.message);
                 barcodeContainer.classList.remove('show');
@@ -1047,12 +1058,12 @@
 
         function resetSizes() {
             // Reset sliders
-            document.getElementById('detailsFontSize').value = 100;
+            document.getElementById('detailsFontSize').value = 150;
             document.getElementById('customFontSize').value = 100;
             document.getElementById('barcodeSize').value = 100;
             
             // Reset display values
-            document.getElementById('detailsFontValue').textContent = '100%';
+            document.getElementById('detailsFontValue').textContent = '150%';
             document.getElementById('customFontValue').textContent = '100%';
             document.getElementById('barcodeSizeValue').textContent = '100%';
             
