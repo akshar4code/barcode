@@ -312,7 +312,7 @@
             border: 2px solid #333;
             padding: 8px;
             background: white;
-            border-radius: 4px;
+            border-radius: 0;
         }
 
         .custom-field-box .field-label {
@@ -475,20 +475,23 @@
                 size: 57mm 45mm;
                 margin: 0;
             }
-            
+
             * {
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
                 color: #000 !important;
+                border-radius: 0 !important;
+                -webkit-border-radius: 0 !important;
+                -moz-border-radius: 0 !important;
             }
-            
+
             html {
                 width: 57mm;
                 height: 45mm;
                 margin: 0;
                 padding: 0;
             }
-            
+
             body {
                 width: 57mm !important;
                 height: 45mm !important;
@@ -497,12 +500,12 @@
                 background: white !important;
                 overflow: visible !important;
             }
-            
-            h1, .details-grid, .input-group, .button-group, 
+
+            h1, .details-grid, .input-group, .button-group,
             #dynamicFieldsContainer, .error, button, .info, .resize-controls {
                 display: none !important;
             }
-            
+
             .container {
                 width: 57mm;
                 height: 45mm;
@@ -515,7 +518,7 @@
                 background: white;
                 overflow: hidden;
             }
-            
+
             .barcode-container {
                 display: flex !important;
                 flex-direction: column;
@@ -530,52 +533,64 @@
                 border-radius: 0;
                 page-break-after: always;
                 page-break-inside: avoid;
-                overflow: visible !important;
+                overflow: hidden !important;
                 position: relative;
                 visibility: visible !important;
                 opacity: 1 !important;
             }
-            
+
             .print-btn, .download-btn {
                 display: none !important;
             }
-            
+
             .details-display {
                 display: block !important;
                 width: 100%;
-                max-width: 59mm;
+                max-width: 56mm;
                 padding: 0;
                 margin: 0;
                 background: white;
                 border: none;
                 flex-shrink: 0;
+                text-align: left;
+                overflow: hidden;
             }
-            
+
             .details-display p {
                 display: flex !important;
                 width: 100%;
                 margin: 0.2mm 0;
                 line-height: 1.05;
+                align-items: flex-start;
             }
-            
+
             .details-display strong {
-                width: 8mm;
-                font-weight: bold;
-                flex-shrink: 0;
-                text-align: left;
+                font-weight: bold !important;
+                flex-shrink: 0 !important;
+                text-align: left !important;
+                display: inline-block !important;
+                width: 14mm !important;
+                min-width: 14mm !important;
+                max-width: 14mm !important;
+                padding: 0 !important;
+                margin: 0 !important;
             }
-            
+
             .details-display .colon {
-                margin: 0 0.3mm;
-                flex-shrink: 0;
+                margin: 0 !important;
+                flex-shrink: 0 !important;
+                text-align: left !important;
+                width: auto !important;
+                display: inline-block !important;
+                margin-right: 2mm !important;
             }
-            
+
             .details-display .value {
                 font-weight: bold;
                 flex: 1;
                 word-wrap: break-word;
             }
-            
+
             .custom-fields-container {
                 display: grid !important;
                 grid-template-columns: 1fr 1fr;
@@ -585,18 +600,25 @@
                 border-top: 0.5pt solid #333;
                 flex-shrink: 0;
                 width: 100%;
-                max-width: 59mm;
+                max-width: 56mm;
             }
-            
+
             .custom-field-box {
-                border: 0.5pt solid #333;
-                padding: 0.4mm;
-                background: white;
-                border-radius: 0;
+                border: 0.5pt solid #333 !important;
+                padding: 0.4mm !important;
+                background: white !important;
+                border-radius: 0 !important;
+                -webkit-border-radius: 0 !important;
+                -moz-border-radius: 0 !important;
+                border-top-left-radius: 0 !important;
+                border-top-right-radius: 0 !important;
+                border-bottom-left-radius: 0 !important;
+                border-bottom-right-radius: 0 !important;
                 page-break-inside: avoid;
                 max-width: 100%;
+                overflow: hidden;
             }
-            
+
             .custom-field-box .field-label {
                 font-weight: bold;
                 color: #000;
@@ -605,380 +627,387 @@
                 line-height: 0.95;
                 word-wrap: break-word;
             }
-            
+
             .custom-field-box .field-value {
                 font-weight: normal;
                 color: #000;
                 word-wrap: break-word;
                 line-height: 0.95;
             }
-            
+
             #barcode {
                 display: block !important;
                 width: 100% !important;
-                max-width: 59mm !important;
+                max-width: 55mm !important;
+                max-height: 15mm !important;
                 height: auto !important;
                 margin: 0.5mm auto 0 auto;
                 flex-shrink: 0;
-                overflow: visible;
+                overflow: hidden !important;
+                object-fit: contain !important;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>📦 Product Label Generator</h1>
-        
-        <div class="info">
-            <p><strong>🖨️ Godex G500 Printer Setup:</strong></p>
-            <p>1. In Print Dialog: Select "Godex G500" printer</p>
-            <p>2. Paper Size: Custom → 55mm x 40mm </p>
-            <p>3. Scale: 100% (Actual Size) - DO NOT use "Fit to Page"</p>
-            <p>4. Margins: Set all to 0</p>
-            <p>5. Orientation: Landscape (if label is wider than tall)</p>
-        </div>
-        
-        <div class="details-grid">
-            <div class="input-group">
-                <label for="codeInput">Code:</label>
-                <input 
-                    type="text" 
-                    id="codeInput" 
+<div class="container">
+    <h1>📦 Product Label Generator</h1>
+
+<!--    <div class="info">-->
+<!--        <p><strong>🖨️ Godex G500 Printer Setup:</strong></p>-->
+<!--        <p>1. In Print Dialog: Select "Godex G500" printer</p>-->
+<!--        <p>2. Paper Size: Custom → 57mm x 45mm </p>-->
+<!--        <p>3. Scale: 100% (Actual Size) - DO NOT use "Fit to Page"</p>-->
+<!--        <p>4. Margins: Set all to 0</p>-->
+<!--        <p>5. Orientation: Landscape (if label is wider than tall)</p>-->
+<!--    </div>-->
+
+    <div class="details-grid">
+        <div class="input-group">
+            <label for="codeInput">Code:</label>
+            <input
+                    type="text"
+                    id="codeInput"
                     oninput="updateBarcodeNumber()"
                     autofocus
-                >
-            </div>
-
-            <div class="input-group">
-                <label for="finishInput">Finish:</label>
-                <input 
-                    type="text" 
-                    id="finishInput" 
-                    oninput="updateBarcodeNumber()"
-                >
-            </div>
-
-            <div class="input-group">
-                <label for="sizeInput">Size:</label>
-                <input 
-                    type="text" 
-                    id="sizeInput" 
-                    oninput="updateBarcodeNumber()"
-                >
-            </div>
-
-            <div class="input-group">
-                <label for="qtyInput">Quantity:</label>
-                <input 
-                    type="text" 
-                    id="qtyInput" 
-                    oninput="updateBarcodeNumber()"
-                >
-            </div>
-
-            <div class="input-group hidden" id="mrpGroup">
-                <label for="mrpInput">MRP:</label>
-                <input 
-                    type="text" 
-                    id="mrpInput" 
-                    oninput="updateBarcodeNumber()"
-                >
-            </div>
-        </div>
-
-        <div class="button-group">
-            <button class="secondary-btn" onclick="toggleMRP()">+ Add MRP</button>
-            <button class="secondary-btn" onclick="addDynamicField()">+ Add Custom Field</button>
-        </div>
-
-        <div id="dynamicFieldsContainer"></div>
-
-        <div class="input-group">
-            <label for="barcodeInput">Barcode Number:</label>
-            <input 
-                type="text" 
-                id="barcodeInput" 
-                placeholder="Auto-generated from fields above"
             >
         </div>
 
-        <button onclick="generateBarcode()">Generate Product Label</button>
-
-        <div class="error" id="error"></div>
-
-        <div class="resize-controls" id="resizeControls">
-            <h3>🎨 Resize Label Elements</h3>
-            <div class="resize-group">
-                <label for="detailsFontSize">Product Details Font Size: <span class="resize-value" id="detailsFontValue">150%</span></label>
-                <input type="range" id="detailsFontSize" min="50" max="150" value="150" oninput="resizeElements()">
-            </div>
-            <div class="resize-group">
-                <label for="customFontSize">Custom Fields Font Size: <span class="resize-value" id="customFontValue">100%</span></label>
-                <input type="range" id="customFontSize" min="50" max="150" value="100" oninput="resizeElements()">
-            </div>
-            <div class="resize-group">
-                <label for="barcodeSize">Barcode Size: <span class="resize-value" id="barcodeSizeValue">100%</span></label>
-                <input type="range" id="barcodeSize" min="50" max="150" value="100" oninput="resizeElements()">
-            </div>
-            <button class="secondary-btn" onclick="resetSizes()" style="width: 100%; margin-top: 10px;">Reset to Default</button>
+        <div class="input-group">
+            <label for="finishInput">Finish:</label>
+            <input
+                    type="text"
+                    id="finishInput"
+                    oninput="updateBarcodeNumber()"
+            >
         </div>
 
-        <div class="barcode-container" id="barcodeContainer">
-            <div class="details-display" id="detailsDisplay"></div>
-            <svg id="barcode"></svg>
-            <button class="print-btn" onclick="printBarcode()">Print Label (55x40mm)</button>
-            <button class="download-btn" onclick="downloadBarcode()">Download Barcode</button>
+        <div class="input-group">
+            <label for="sizeInput">Size:</label>
+            <input
+                    type="text"
+                    id="sizeInput"
+                    oninput="updateBarcodeNumber()"
+            >
+        </div>
+
+        <div class="input-group">
+            <label for="qtyInput">Quantity:</label>
+            <input
+                    type="text"
+                    id="qtyInput"
+                    oninput="updateBarcodeNumber()"
+            >
+        </div>
+
+        <div class="input-group hidden" id="mrpGroup">
+            <label for="mrpInput">MRP:</label>
+            <input
+                    type="text"
+                    id="mrpInput"
+                    oninput="updateBarcodeNumber()"
+            >
         </div>
     </div>
 
-    <script>
-        // Update barcode number based on all fields
-        function updateBarcodeNumber() {
+    <div class="button-group">
+        <button class="secondary-btn" onclick="toggleMRP()">+ Add MRP</button>
+        <button class="secondary-btn" onclick="addDynamicField()">+ Add Custom Field</button>
+    </div>
+
+    <div id="dynamicFieldsContainer"></div>
+
+    <div class="input-group">
+        <label for="barcodeInput">Barcode Number:</label>
+        <input
+                type="text"
+                id="barcodeInput"
+                placeholder="Auto-generated from fields above"
+        >
+    </div>
+
+    <button onclick="generateBarcode()">Generate Product Label</button>
+
+    <div class="error" id="error"></div>
+
+    <div class="resize-controls" id="resizeControls">
+        <h3>🎨 Resize Label Elements</h3>
+        <div class="resize-group">
+            <label for="detailsFontSize">Product Details Font Size: <span class="resize-value" id="detailsFontValue">150%</span></label>
+            <input type="range" id="detailsFontSize" min="50" max="150" value="150" oninput="resizeElements()">
+        </div>
+        <div class="resize-group">
+            <label for="customFontSize">Custom Fields Font Size: <span class="resize-value" id="customFontValue">100%</span></label>
+            <input type="range" id="customFontSize" min="50" max="150" value="100" oninput="resizeElements()">
+        </div>
+        <div class="resize-group">
+            <label for="barcodeSize">Barcode Height: <span class="resize-value" id="barcodeSizeValue">100%</span></label>
+            <input type="range" id="barcodeSize" min="50" max="150" value="100" oninput="resizeElements()">
+        </div>
+        <div class="resize-group">
+            <label for="barcodeWidth">Barcode Width: <span class="resize-value" id="barcodeWidthValue">100%</span></label>
+            <input type="range" id="barcodeWidth" min="50" max="200" value="100" oninput="resizeElements()">
+        </div>
+        <button class="secondary-btn" onclick="resetSizes()" style="width: 100%; margin-top: 10px;">Reset to Default</button>
+    </div>
+
+    <div class="barcode-container" id="barcodeContainer">
+        <div class="details-display" id="detailsDisplay"></div>
+        <svg id="barcode"></svg>
+        <button class="print-btn" onclick="printBarcode()">Print Label (55x40mm)</button>
+        <button class="download-btn" onclick="downloadBarcode()">Download Barcode</button>
+    </div>
+</div>
+
+<script>
+    // Update barcode number based on all fields
+    function updateBarcodeNumber() {
+        const code = document.getElementById('codeInput').value.trim();
+        const finish = document.getElementById('finishInput').value.trim();
+        const size = document.getElementById('sizeInput').value.trim();
+        const qty = document.getElementById('qtyInput').value.trim();
+        const mrp = document.getElementById('mrpInput').value.trim();
+
+        // Collect all non-empty values (excluding custom fields)
+        const values = [];
+        if (code) values.push(code);
+        if (finish) values.push(finish);
+        if (size) values.push(size);
+        if (qty) values.push(qty);
+        if (mrp) values.push(mrp);
+
+        // Join with hyphens
+        const barcodeNumber = values.join('-');
+        document.getElementById('barcodeInput').value = barcodeNumber;
+    }
+
+    function generateBarcode() {
+        const input = document.getElementById('barcodeInput').value.trim();
+        const barcodeContainer = document.getElementById('barcodeContainer');
+        const errorDiv = document.getElementById('error');
+        const detailsDisplay = document.getElementById('detailsDisplay');
+
+        // Clear previous error
+        errorDiv.classList.remove('show');
+        errorDiv.textContent = '';
+
+        // Validate input
+        if (!input) {
+            showError('Please enter barcode number to generate barcode');
+            barcodeContainer.classList.remove('show');
+            return;
+        }
+
+        try {
+            // Get additional details
             const code = document.getElementById('codeInput').value.trim();
             const finish = document.getElementById('finishInput').value.trim();
             const size = document.getElementById('sizeInput').value.trim();
             const qty = document.getElementById('qtyInput').value.trim();
             const mrp = document.getElementById('mrpInput').value.trim();
-            
-            // Collect all non-empty values (excluding custom fields)
-            const values = [];
-            if (code) values.push(code);
-            if (finish) values.push(finish);
-            if (size) values.push(size);
-            if (qty) values.push(qty);
-            if (mrp) values.push(mrp);
-            
-            // Join with hyphens
-            const barcodeNumber = values.join('-');
-            document.getElementById('barcodeInput').value = barcodeNumber;
-        }
 
-        function generateBarcode() {
-            const input = document.getElementById('barcodeInput').value.trim();
-            const barcodeContainer = document.getElementById('barcodeContainer');
-            const errorDiv = document.getElementById('error');
-            const detailsDisplay = document.getElementById('detailsDisplay');
+            // Count total fields
+            let productFieldCount = 0;
+            if (code) productFieldCount++;
+            if (finish) productFieldCount++;
+            if (size) productFieldCount++;
+            if (qty) productFieldCount++;
+            if (mrp) productFieldCount++;
 
-            // Clear previous error
-            errorDiv.classList.remove('show');
-            errorDiv.textContent = '';
+            // Count custom fields
+            const dynamicFields = document.querySelectorAll('.dynamic-field');
+            const customFieldsArray = [];
 
-            // Validate input
-            if (!input) {
-                showError('Please enter barcode number to generate barcode');
-                barcodeContainer.classList.remove('show');
-                return;
+            dynamicFields.forEach(field => {
+                const label = field.querySelector('input[placeholder="Field Name"]').value.trim();
+                const value = field.querySelector('input[placeholder="Field Value"]').value.trim();
+                if (label && value) {
+                    customFieldsArray.push({ label, value });
+                }
+            });
+
+            const customFieldCount = customFieldsArray.length;
+            const totalFields = productFieldCount + customFieldCount;
+
+            // Calculate dynamic sizing based on total fields
+            // More fields = smaller barcode and fonts
+            let barcodeHeight, detailsFontSize, customFontSize, barcodeMaxHeight;
+
+            if (totalFields <= 5) {
+                // Few fields - larger sizes
+                barcodeHeight = 80;
+                detailsFontSize = '9pt';
+                customFontSize = '8pt';
+                barcodeMaxHeight = '16mm';
+            } else if (totalFields <= 7) {
+                // Medium fields
+                barcodeHeight = 70;
+                detailsFontSize = '8pt';
+                customFontSize = '7pt';
+                barcodeMaxHeight = '14mm';
+            } else if (totalFields <= 9) {
+                // Many fields
+                barcodeHeight = 55;
+                detailsFontSize = '7pt';
+                customFontSize = '6pt';
+                barcodeMaxHeight = '12mm';
+            } else if (totalFields <= 11) {
+                // More fields
+                barcodeHeight = 50;
+                detailsFontSize = '6pt';
+                customFontSize = '5pt';
+                barcodeMaxHeight = '10mm';
+            } else {
+                // Too many fields - minimum sizes
+                barcodeHeight = 40;
+                detailsFontSize = '5pt';
+                customFontSize = '4.5pt';
+                barcodeMaxHeight = '8mm';
             }
 
-            try {
-                // Get additional details
-                const code = document.getElementById('codeInput').value.trim();
-                const finish = document.getElementById('finishInput').value.trim();
-                const size = document.getElementById('sizeInput').value.trim();
-                const qty = document.getElementById('qtyInput').value.trim();
-                const mrp = document.getElementById('mrpInput').value.trim();
+            // Determine barcode width based on screen size
+            const isMobile = window.innerWidth <= 480;
+            const barcodeWidth = isMobile ? 1.5 : 2;
+            const screenFontSize = isMobile ? 14 : 18;
 
-                // Count total fields
-                let productFieldCount = 0;
-                if (code) productFieldCount++;
-                if (finish) productFieldCount++;
-                if (size) productFieldCount++;
-                if (qty) productFieldCount++;
-                if (mrp) productFieldCount++;
+            // Generate barcode with CODE128 format
+            JsBarcode("#barcode", input, {
+                format: 'CODE128',
+                width: barcodeWidth,
+                height: barcodeHeight,
+                displayValue: false,
+                fontSize: screenFontSize,
+                margin: 1
+            });
 
-                // Count custom fields
-                const dynamicFields = document.querySelectorAll('.dynamic-field');
-                const customFieldsArray = [];
-                
-                dynamicFields.forEach(field => {
-                    const label = field.querySelector('input[placeholder="Field Name"]').value.trim();
-                    const value = field.querySelector('input[placeholder="Field Value"]').value.trim();
-                    if (label && value) {
-                        customFieldsArray.push({ label, value });
-                    }
-                });
+            // Apply barcode max-height as inline style for print
+            const barcodeElement = document.getElementById('barcode');
+            barcodeElement.style.maxHeight = barcodeMaxHeight;
 
-                const customFieldCount = customFieldsArray.length;
-                const totalFields = productFieldCount + customFieldCount;
+            // Display details if any are provided
+            let detailsHTML = '';
+            if (code) detailsHTML += `<p><strong>Code</strong><span class="colon">:</span><span class="value">${code}</span></p>`;
+            if (finish) detailsHTML += `<p><strong>Finish</strong><span class="colon">:</span><span class="value">${finish}</span></p>`;
+            if (size) detailsHTML += `<p><strong>Size</strong><span class="colon">:</span><span class="value">${size}</span></p>`;
+            if (qty) detailsHTML += `<p><strong>Qty</strong><span class="colon">:</span><span class="value">${qty}</span></p>`;
+            if (mrp) detailsHTML += `<p><strong>MRP</strong><span class="colon">:</span><span class="value">${mrp}</span></p>`;
 
-                // Calculate dynamic sizing based on total fields
-                // More fields = smaller barcode and fonts
-                let barcodeHeight, detailsFontSize, customFontSize, barcodeMaxHeight;
-                
-                if (totalFields <= 5) {
-                    // Few fields - larger sizes
-                    barcodeHeight = 80;
-                    detailsFontSize = '9pt';
-                    customFontSize = '8pt';
-                    barcodeMaxHeight = '16mm';
-                } else if (totalFields <= 7) {
-                    // Medium fields
-                    barcodeHeight = 70;
-                    detailsFontSize = '8pt';
-                    customFontSize = '7pt';
-                    barcodeMaxHeight = '14mm';
-                } else if (totalFields <= 9) {
-                    // Many fields
-                    barcodeHeight = 55;
-                    detailsFontSize = '7pt';
-                    customFontSize = '6pt';
-                    barcodeMaxHeight = '12mm';
-                } else if (totalFields <= 11) {
-                    // More fields
-                    barcodeHeight = 50;
-                    detailsFontSize = '6pt';
-                    customFontSize = '5pt';
-                    barcodeMaxHeight = '10mm';
-                } else {
-                    // Too many fields - minimum sizes
-                    barcodeHeight = 40;
-                    detailsFontSize = '5pt';
-                    customFontSize = '4.5pt';
-                    barcodeMaxHeight = '8mm';
-                }
-
-                // Determine barcode width based on screen size
-                const isMobile = window.innerWidth <= 480;
-                const barcodeWidth = isMobile ? 1.5 : 2;
-                const screenFontSize = isMobile ? 14 : 18;
-
-                // Generate barcode with CODE128 format
-                JsBarcode("#barcode", input, {
-                    format: 'CODE128',
-                    width: barcodeWidth,
-                    height: barcodeHeight,
-                    displayValue: false,
-                    fontSize: screenFontSize,
-                    margin: 1
-                });
-
-                // Apply barcode max-height as inline style for print
-                const barcodeElement = document.getElementById('barcode');
-                barcodeElement.style.maxHeight = barcodeMaxHeight;
-
-                // Display details if any are provided
-                let detailsHTML = '';
-                if (code) detailsHTML += `<p><strong>Code</strong><span class="colon">:</span><span class="value">${code}</span></p>`;
-                if (finish) detailsHTML += `<p><strong>Finish</strong><span class="colon">:</span><span class="value">${finish}</span></p>`;
-                if (size) detailsHTML += `<p><strong>Size</strong><span class="colon">:</span><span class="value">${size}</span></p>`;
-                if (qty) detailsHTML += `<p><strong>Qty</strong><span class="colon">:</span><span class="value">${qty}</span></p>`;
-                if (mrp) detailsHTML += `<p><strong>MRP</strong><span class="colon">:</span><span class="value">${mrp}</span></p>`;
-
-                // Build custom fields in boxed format
-                let customFieldsHTML = '';
-                if (customFieldsArray.length > 0) {
-                    customFieldsHTML = '<div class="custom-fields-container">';
-                    customFieldsArray.forEach(field => {
-                        customFieldsHTML += `
-                            <div class="custom-field-box">
+            // Build custom fields in boxed format
+            let customFieldsHTML = '';
+            if (customFieldsArray.length > 0) {
+                customFieldsHTML = '<div class="custom-fields-container">';
+                customFieldsArray.forEach(field => {
+                    customFieldsHTML += `
+                            <div class="custom-field-box" style="border-radius: 0; -webkit-border-radius: 0; -moz-border-radius: 0;">
                                 <div class="field-label">${field.label} :</div>
                                 <div class="field-value">${field.value}</div>
                             </div>
                         `;
-                    });
-                    customFieldsHTML += '</div>';
-                }
-
-                if (detailsHTML || customFieldsHTML) {
-                    detailsDisplay.innerHTML = detailsHTML + customFieldsHTML;
-                    detailsDisplay.style.display = 'block';
-                    
-                    // Apply dynamic font sizes for screen view
-                    detailsDisplay.querySelectorAll('p').forEach(p => {
-                        p.style.fontSize = detailsFontSize;
-                    });
-                    detailsDisplay.querySelectorAll('.field-label, .field-value').forEach(el => {
-                        el.style.fontSize = customFontSize;
-                    });
-                } else {
-                    detailsDisplay.style.display = 'none';
-                }
-
-                barcodeContainer.classList.add('show');
-                
-                // Show resize controls and store original sizes
-                document.getElementById('resizeControls').classList.add('show');
-                window.originalDetailsFontSize = detailsFontSize;
-                window.originalCustomFontSize = customFontSize;
-                window.originalBarcodeHeight = barcodeHeight;
-                
-                // Apply the default 150% scale for product details immediately
-                resizeElements();
-            } catch (error) {
-                showError('Error: ' + error.message);
-                barcodeContainer.classList.remove('show');
+                });
+                customFieldsHTML += '</div>';
             }
-        }
 
-        function showError(message) {
-            const errorDiv = document.getElementById('error');
-            errorDiv.textContent = message;
-            errorDiv.classList.add('show');
-            
-            // Hide resize controls on error
-            document.getElementById('resizeControls').classList.remove('show');
-        }
+            if (detailsHTML || customFieldsHTML) {
+                detailsDisplay.innerHTML = detailsHTML + customFieldsHTML;
+                detailsDisplay.style.display = 'block';
 
-        function downloadBarcode() {
-            const svg = document.getElementById('barcode');
-            const svgData = new XMLSerializer().serializeToString(svg);
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            const img = new Image();
-
-            img.onload = function() {
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.fillStyle = 'white';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(img, 0, 0);
-                
-                const pngFile = canvas.toDataURL('image/png');
-                const downloadLink = document.createElement('a');
-                downloadLink.download = 'barcode.png';
-                downloadLink.href = pngFile;
-                downloadLink.click();
-            };
-
-            img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
-        }
-
-        function printBarcode() {
-            window.print();
-        }
-
-        let mrpVisible = false;
-        function toggleMRP() {
-            const mrpGroup = document.getElementById('mrpGroup');
-            const btn = event.target;
-            
-            mrpVisible = !mrpVisible;
-            
-            if (mrpVisible) {
-                mrpGroup.classList.remove('hidden');
-                btn.textContent = '- Remove MRP';
-                btn.style.background = 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)';
+                // Apply dynamic font sizes for screen view
+                detailsDisplay.querySelectorAll('p').forEach(p => {
+                    p.style.fontSize = detailsFontSize;
+                });
+                detailsDisplay.querySelectorAll('.field-label, .field-value').forEach(el => {
+                    el.style.fontSize = customFontSize;
+                });
             } else {
-                mrpGroup.classList.add('hidden');
-                document.getElementById('mrpInput').value = '';
-                btn.textContent = '+ Add MRP';
-                btn.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
+                detailsDisplay.style.display = 'none';
             }
-            
-            // Recompute barcode number
-            updateBarcodeNumber();
+
+            barcodeContainer.classList.add('show');
+
+            // Show resize controls and store original sizes
+            document.getElementById('resizeControls').classList.add('show');
+            window.originalDetailsFontSize = detailsFontSize;
+            window.originalCustomFontSize = customFontSize;
+            window.originalBarcodeHeight = barcodeHeight;
+            window.originalBarcodeWidth = barcodeWidth;
+
+            // Apply the default 150% scale for product details immediately
+            resizeElements();
+        } catch (error) {
+            showError('Error: ' + error.message);
+            barcodeContainer.classList.remove('show');
+        }
+    }
+
+    function showError(message) {
+        const errorDiv = document.getElementById('error');
+        errorDiv.textContent = message;
+        errorDiv.classList.add('show');
+
+        // Hide resize controls on error
+        document.getElementById('resizeControls').classList.remove('show');
+    }
+
+    function downloadBarcode() {
+        const svg = document.getElementById('barcode');
+        const svgData = new XMLSerializer().serializeToString(svg);
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+
+        img.onload = function() {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+
+            const pngFile = canvas.toDataURL('image/png');
+            const downloadLink = document.createElement('a');
+            downloadLink.download = 'barcode.png';
+            downloadLink.href = pngFile;
+            downloadLink.click();
+        };
+
+        img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
+    }
+
+    function printBarcode() {
+        window.print();
+    }
+
+    let mrpVisible = false;
+    function toggleMRP() {
+        const mrpGroup = document.getElementById('mrpGroup');
+        const btn = event.target;
+
+        mrpVisible = !mrpVisible;
+
+        if (mrpVisible) {
+            mrpGroup.classList.remove('hidden');
+            btn.textContent = '- Remove MRP';
+            btn.style.background = 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)';
+        } else {
+            mrpGroup.classList.add('hidden');
+            document.getElementById('mrpInput').value = '';
+            btn.textContent = '+ Add MRP';
+            btn.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
         }
 
-        let fieldCounter = 0;
-        function addDynamicField() {
-            fieldCounter++;
-            const container = document.getElementById('dynamicFieldsContainer');
-            
-            const fieldDiv = document.createElement('div');
-            fieldDiv.className = 'input-group dynamic-field';
-            fieldDiv.id = `dynamic-field-${fieldCounter}`;
-            
-            fieldDiv.innerHTML = `
+        // Recompute barcode number
+        updateBarcodeNumber();
+    }
+
+    let fieldCounter = 0;
+    function addDynamicField() {
+        fieldCounter++;
+        const container = document.getElementById('dynamicFieldsContainer');
+
+        const fieldDiv = document.createElement('div');
+        fieldDiv.className = 'input-group dynamic-field';
+        fieldDiv.id = `dynamic-field-${fieldCounter}`;
+
+        fieldDiv.innerHTML = `
                 <div style="flex: 1;">
                     <label>Custom Field ${fieldCounter}:</label>
                     <div style="display: flex; gap: 10px;">
@@ -988,89 +1017,93 @@
                 </div>
                 <button class="remove-field-btn" onclick="removeDynamicField(${fieldCounter})">Remove</button>
             `;
-            
-            container.appendChild(fieldDiv);
-            
-            // Recompute barcode number after adding field
+
+        container.appendChild(fieldDiv);
+
+        // Recompute barcode number after adding field
+        updateBarcodeNumber();
+    }
+
+    function removeDynamicField(id) {
+        const field = document.getElementById(`dynamic-field-${id}`);
+        if (field) {
+            field.remove();
+            // Recompute barcode number after removing field
             updateBarcodeNumber();
         }
+    }
 
-        function removeDynamicField(id) {
-            const field = document.getElementById(`dynamic-field-${id}`);
-            if (field) {
-                field.remove();
-                // Recompute barcode number after removing field
-                updateBarcodeNumber();
-            }
-        }
+    function resizeElements() {
+        const detailsScale = document.getElementById('detailsFontSize').value;
+        const customScale = document.getElementById('customFontSize').value;
+        const barcodeScale = document.getElementById('barcodeSize').value;
+        const barcodeWidthScale = document.getElementById('barcodeWidth').value;
 
-        function resizeElements() {
-            const detailsScale = document.getElementById('detailsFontSize').value;
-            const customScale = document.getElementById('customFontSize').value;
-            const barcodeScale = document.getElementById('barcodeSize').value;
-            
-            // Update display values
-            document.getElementById('detailsFontValue').textContent = detailsScale + '%';
-            document.getElementById('customFontValue').textContent = customScale + '%';
-            document.getElementById('barcodeSizeValue').textContent = barcodeScale + '%';
-            
-            // Get original sizes
-            const originalDetailsSize = parseFloat(window.originalDetailsFontSize);
-            const originalCustomSize = parseFloat(window.originalCustomFontSize);
-            const originalBarcodeHeight = window.originalBarcodeHeight;
-            
-            // Calculate new sizes
-            const newDetailsSize = (originalDetailsSize * detailsScale / 100).toFixed(1) + 'pt';
-            const newCustomSize = (originalCustomSize * customScale / 100).toFixed(1) + 'pt';
-            
-            // Apply to product details
-            document.querySelectorAll('.details-display p, .details-display strong, .details-display .colon, .details-display .value').forEach(el => {
-                el.style.fontSize = newDetailsSize;
+        // Update display values
+        document.getElementById('detailsFontValue').textContent = detailsScale + '%';
+        document.getElementById('customFontValue').textContent = customScale + '%';
+        document.getElementById('barcodeSizeValue').textContent = barcodeScale + '%';
+        document.getElementById('barcodeWidthValue').textContent = barcodeWidthScale + '%';
+
+        // Get original sizes
+        const originalDetailsSize = parseFloat(window.originalDetailsFontSize);
+        const originalCustomSize = parseFloat(window.originalCustomFontSize);
+        const originalBarcodeHeight = window.originalBarcodeHeight;
+        const originalBarcodeWidth = window.originalBarcodeWidth || 2;
+
+        // Calculate new sizes
+        const newDetailsSize = (originalDetailsSize * detailsScale / 100).toFixed(1) + 'pt';
+        const newCustomSize = (originalCustomSize * customScale / 100).toFixed(1) + 'pt';
+
+        // Apply to product details
+        document.querySelectorAll('.details-display p, .details-display strong, .details-display .colon, .details-display .value').forEach(el => {
+            el.style.fontSize = newDetailsSize;
+        });
+
+        // Apply to custom fields
+        document.querySelectorAll('.custom-field-box .field-label, .custom-field-box .field-value').forEach(el => {
+            el.style.fontSize = newCustomSize;
+        });
+
+        // Resize barcode
+        const barcodeInput = document.getElementById('barcodeInput').value.trim();
+        if (barcodeInput) {
+            const newBarcodeHeight = Math.round(originalBarcodeHeight * barcodeScale / 100);
+            const newBarcodeWidth = (originalBarcodeWidth * barcodeWidthScale / 100).toFixed(1);
+            const screenFontSize = window.innerWidth <= 480 ? 14 : 18;
+
+            JsBarcode("#barcode", barcodeInput, {
+                format: 'CODE128',
+                width: newBarcodeWidth,
+                height: newBarcodeHeight,
+                displayValue: false,
+                fontSize: screenFontSize,
+                margin: 1
             });
-            
-            // Apply to custom fields
-            document.querySelectorAll('.custom-field-box .field-label, .custom-field-box .field-value').forEach(el => {
-                el.style.fontSize = newCustomSize;
-            });
-            
-            // Resize barcode
-            const barcodeInput = document.getElementById('barcodeInput').value.trim();
-            if (barcodeInput) {
-                const isMobile = window.innerWidth <= 480;
-                const barcodeWidth = isMobile ? 1.5 : 2;
-                const newBarcodeHeight = Math.round(originalBarcodeHeight * barcodeScale / 100);
-                const screenFontSize = isMobile ? 14 : 18;
-                
-                JsBarcode("#barcode", barcodeInput, {
-                    format: 'CODE128',
-                    width: barcodeWidth,
-                    height: newBarcodeHeight,
-                    displayValue: false,
-                    fontSize: screenFontSize,
-                    margin: 1
-                });
-                
-                // Update max-height for print
-                const barcodeElement = document.getElementById('barcode');
-                const newMaxHeight = (parseFloat(window.originalDetailsFontSize) * 2 * barcodeScale / 100).toFixed(1) + 'mm';
-                barcodeElement.style.maxHeight = newMaxHeight;
-            }
-        }
 
-        function resetSizes() {
-            // Reset sliders
-            document.getElementById('detailsFontSize').value = 150;
-            document.getElementById('customFontSize').value = 100;
-            document.getElementById('barcodeSize').value = 100;
-            
-            // Reset display values
-            document.getElementById('detailsFontValue').textContent = '150%';
-            document.getElementById('customFontValue').textContent = '100%';
-            document.getElementById('barcodeSizeValue').textContent = '100%';
-            
-            // Apply original sizes
-            resizeElements();
+            // Update max-height for print
+            const barcodeElement = document.getElementById('barcode');
+            const newMaxHeight = (parseFloat(window.originalDetailsFontSize) * 2 * barcodeScale / 100).toFixed(1) + 'mm';
+            barcodeElement.style.maxHeight = newMaxHeight;
         }
-    </script>
+    }
+
+    function resetSizes() {
+        // Reset sliders
+        document.getElementById('detailsFontSize').value = 150;
+        document.getElementById('customFontSize').value = 100;
+        document.getElementById('barcodeSize').value = 100;
+        document.getElementById('barcodeWidth').value = 100;
+
+        // Reset display values
+        document.getElementById('detailsFontValue').textContent = '150%';
+        document.getElementById('customFontValue').textContent = '100%';
+        document.getElementById('barcodeSizeValue').textContent = '100%';
+        document.getElementById('barcodeWidthValue').textContent = '100%';
+
+        // Apply original sizes
+        resizeElements();
+    }
+</script>
 </body>
 </html>
