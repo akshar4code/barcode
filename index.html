@@ -486,14 +486,14 @@
             }
 
             html {
-                width: 57mm;
+                width: 60mm;
                 height: 45mm;
                 margin: 0;
                 padding: 0;
             }
 
             body {
-                width: 57mm !important;
+                width: 60mm !important;
                 height: 45mm !important;
                 margin: 0 !important;
                 padding: 0 !important;
@@ -507,9 +507,9 @@
             }
 
             .container {
-                width: 57mm;
+                width: 60mm;
                 height: 45mm;
-                max-width: 57mm;
+                max-width: 60mm;
                 max-height: 45mm;
                 padding: 0;
                 margin: 0;
@@ -522,11 +522,11 @@
             .barcode-container {
                 display: flex !important;
                 flex-direction: column;
-                width: 57mm !important;
+                width: 60mm !important;
                 height: 45mm !important;
-                max-width: 57mm !important;
+                max-width: 60mm !important;
                 max-height: 45mm !important;
-                padding: 0.5mm;
+                padding: 1mm 0;
                 margin: 0 !important;
                 background: white !important;
                 box-shadow: none;
@@ -546,7 +546,7 @@
             .details-display {
                 display: block !important;
                 width: 100%;
-                max-width: 56mm;
+                max-width: 60mm;
                 padding: 0;
                 margin: 0;
                 background: white;
@@ -559,8 +559,8 @@
             .details-display p {
                 display: flex !important;
                 width: 100%;
-                margin: 0.2mm 0;
-                line-height: 1.05;
+                margin: 0.8mm 0;
+                line-height: 1.2;
                 align-items: flex-start;
             }
 
@@ -594,13 +594,13 @@
             .custom-fields-container {
                 display: grid !important;
                 grid-template-columns: 1fr 1fr;
-                gap: 0.8mm;
+                gap: 1mm;
                 margin-top: 1mm;
                 padding-top: 1mm;
                 border-top: 0.5pt solid #333;
                 flex-shrink: 0;
                 width: 100%;
-                max-width: 56mm;
+                max-width: 60mm;
             }
 
             .custom-field-box {
@@ -637,11 +637,11 @@
 
             #barcode {
                 display: block !important;
-                width: 100% !important;
-                max-width: 55mm !important;
+                width: 59mm !important;
+                max-width: 59mm !important;
                 max-height: 15mm !important;
                 height: auto !important;
-                margin: 0.5mm auto 0 auto;
+                margin: 1mm auto 0 auto;
                 flex-shrink: 0;
                 overflow: hidden !important;
                 object-fit: contain !important;
@@ -868,7 +868,7 @@
             // Determine barcode width based on screen size
             // Using thinner lines (lower width) to prevent ink bleeding/overlap during printing
             const isMobile = window.innerWidth <= 480;
-            const barcodeWidth = isMobile ? 0.8 : 1.0;
+            const barcodeWidth = isMobile ? 1.5 : 2.0;
             const screenFontSize = isMobile ? 14 : 18;
 
             // Generate barcode with CODE128 format
@@ -1052,7 +1052,7 @@
         const originalDetailsSize = parseFloat(window.originalDetailsFontSize);
         const originalCustomSize = parseFloat(window.originalCustomFontSize);
         const originalBarcodeHeight = window.originalBarcodeHeight;
-        const originalBarcodeWidth = window.originalBarcodeWidth || 1.0;
+        const originalBarcodeWidth = window.originalBarcodeWidth || 2.0;
 
         // Calculate new sizes
         const newDetailsSize = (originalDetailsSize * detailsScale / 100).toFixed(1) + 'pt';
