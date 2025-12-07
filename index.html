@@ -472,7 +472,7 @@
 
         @media print {
             @page {
-                size: 57mm 45mm;
+                size: 60mm 45mm;
                 margin: 0;
             }
 
@@ -868,17 +868,19 @@
             // Determine barcode width based on screen size
             // Using thinner lines (lower width) to prevent ink bleeding/overlap during printing
             const isMobile = window.innerWidth <= 480;
-            const barcodeWidth = isMobile ? 1.2 : 1.5;
+            const barcodeWidth = isMobile ? 0.8 : 1.0;
             const screenFontSize = isMobile ? 14 : 18;
 
             // Generate barcode with CODE128 format
+            // Using slightly lighter color (#333) to reduce ink density and prevent bleeding/overlap
             JsBarcode("#barcode", input, {
                 format: 'CODE128',
                 width: barcodeWidth,
                 height: barcodeHeight,
                 displayValue: false,
                 fontSize: screenFontSize,
-                margin: 1
+                margin: 1,
+                lineColor: "#333333"
             });
 
             // Apply barcode max-height as inline style for print
@@ -1050,7 +1052,7 @@
         const originalDetailsSize = parseFloat(window.originalDetailsFontSize);
         const originalCustomSize = parseFloat(window.originalCustomFontSize);
         const originalBarcodeHeight = window.originalBarcodeHeight;
-        const originalBarcodeWidth = window.originalBarcodeWidth || 1.5;
+        const originalBarcodeWidth = window.originalBarcodeWidth || 1.0;
 
         // Calculate new sizes
         const newDetailsSize = (originalDetailsSize * detailsScale / 100).toFixed(1) + 'pt';
@@ -1079,7 +1081,8 @@
                 height: newBarcodeHeight,
                 displayValue: false,
                 fontSize: screenFontSize,
-                margin: 1
+                margin: 1,
+                lineColor: "#333333"
             });
 
             // Update max-height for print
