@@ -866,8 +866,9 @@
             }
 
             // Determine barcode width based on screen size
+            // Using thinner lines (lower width) to prevent ink bleeding/overlap during printing
             const isMobile = window.innerWidth <= 480;
-            const barcodeWidth = isMobile ? 1.5 : 2;
+            const barcodeWidth = isMobile ? 1.2 : 1.5;
             const screenFontSize = isMobile ? 14 : 18;
 
             // Generate barcode with CODE128 format
@@ -1049,7 +1050,7 @@
         const originalDetailsSize = parseFloat(window.originalDetailsFontSize);
         const originalCustomSize = parseFloat(window.originalCustomFontSize);
         const originalBarcodeHeight = window.originalBarcodeHeight;
-        const originalBarcodeWidth = window.originalBarcodeWidth || 2;
+        const originalBarcodeWidth = window.originalBarcodeWidth || 1.5;
 
         // Calculate new sizes
         const newDetailsSize = (originalDetailsSize * detailsScale / 100).toFixed(1) + 'pt';
