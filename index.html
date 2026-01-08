@@ -498,7 +498,7 @@
                 margin: 0 !important;
                 padding: 0 !important;
                 background: white !important;
-                overflow: visible !important;
+                overflow: hidden !important;
             }
 
             h1, .details-grid, .input-group, .button-group,
@@ -531,7 +531,7 @@
                 background: white !important;
                 box-shadow: none;
                 border-radius: 0;
-                page-break-after: always;
+                page-break-after: avoid;
                 page-break-inside: avoid;
                 overflow: hidden !important;
                 position: relative;
@@ -866,21 +866,21 @@
             }
 
             // Determine barcode width based on screen size
-            // Using thinner lines (lower width) to prevent ink bleeding/overlap during printing
+            // Using wider bars for reliable scanning
             const isMobile = window.innerWidth <= 480;
-            const barcodeWidth = isMobile ? 1.0 : 1.2;
+            const barcodeWidth = isMobile ? 1.5 : 2;
             const screenFontSize = isMobile ? 14 : 18;
 
             // Generate barcode with CODE128 format
-            // Using slightly lighter color (#333) to reduce ink density and prevent bleeding/overlap
+            // Using pure black for maximum scanner contrast
             JsBarcode("#barcode", input, {
                 format: 'CODE128',
                 width: barcodeWidth,
                 height: barcodeHeight,
                 displayValue: false,
                 fontSize: screenFontSize,
-                margin: 1,
-                lineColor: "#333333"
+                margin: 10,
+                lineColor: "#000000"
             });
 
             // Apply barcode max-height as inline style for print
@@ -1081,8 +1081,8 @@
                 height: newBarcodeHeight,
                 displayValue: false,
                 fontSize: screenFontSize,
-                margin: 1,
-                lineColor: "#333333"
+                margin: 10,
+                lineColor: "#000000"
             });
 
             // Update max-height for print
